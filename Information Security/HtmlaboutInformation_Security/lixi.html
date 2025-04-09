@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lì Xì Ngẫu Nhiên</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f8ff;
+        }
+        .button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px 32px;
+            font-size: 18px;
+            cursor: pointer;
+            border: none;
+            border-radius: 10px;
+            transition: background-color 0.3s;
+        }
+        .button:hover {
+            background-color: #45a049;
+        }
+        #popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 30px;
+            background-color: white;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            z-index: 100;
+        }
+        .popup-content {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        .money-img {
+            max-width: 150px;
+            margin-bottom: 10px;
+        }
+        .close-btn {
+            background-color: #f44336;
+            color: white;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .close-btn:hover {
+            background-color: #d32f2f;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Lì Xì Ngẫu Nhiên</h1>
+    <p>Ấn vào nút dưới đây để nhận lì xì!</p>
+
+    <button class="button" onclick="giveMoney()">Nhận Lì Xì</button>
+
+    <div id="popup">
+        <div class="popup-content" id="popup-content">
+            <!-- Số tiền nhận được sẽ hiển thị ở đây -->
+        </div>
+        <img id="money-img" class="money-img" src="" alt="Tiền nhận được">
+        <button class="close-btn" onclick="closePopup()">Đóng</button>
+    </div>
+
+    <script>
+        // Các mệnh giá tiền và số lượng đồng
+        const moneyTypes = [
+            { amount: 200000, quantity: 1, image: 'https://via.placeholder.com/150?text=200k' },
+            { amount: 100000, quantity: 3, image: 'https://via.placeholder.com/150?text=100k' },
+            { amount: 50000, quantity: 12, image: 'https://via.placeholder.com/150?text=50k' },
+            { amount: 20000, quantity: 1, image: 'https://via.placeholder.com/150?text=20k' }
+        ];
+
+        let totalAmount = 2000000; // Tổng số tiền ban đầu
+
+        function getRandomMoney() {
+            let rand = Math.random() * totalAmount;
+            let remainingAmount = rand;
+
+            for (let i = 0; i < moneyTypes.length; i++) {
+                const type = moneyTypes[i];
+                if (remainingAmount <= type.amount * type.quantity) {
+                    return type;
+                }
+                remainingAmount -= type.amount * type.quantity;
+            }
+            return moneyTypes[0]; // Trả về mệnh giá thấp nhất nếu không tìm thấy
+        }
+
+        function giveMoney() {
+            let selectedMoney = getRandomMoney();
+            totalAmount -= selectedMoney.amount;
+
+            // Hiển thị thông tin popup
+            document.getElementById('popup-content').innerText = `Bạn nhận được: ${selectedMoney.amount} VND`;
+            document.getElementById('money-img').src = selectedMoney.image;
+            document.getElementById('popup').style.display = 'block';
+        }
+
+        function closePopup() {
+            document.getElementById('popup').style.display = 'none';
+        }
+    </script>
+
+</body>
+</html>
